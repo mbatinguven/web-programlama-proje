@@ -1,0 +1,103 @@
+﻿@model WebProgramlamaProje.ViewModels.CourseListViewModel
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Kurs Yönetim Panelim";
+}
+
+<h3 class="text-white display-5 mb-3">🎛 Kurs Yönetim Panelim</h3>
+<hr class="text-white mb-4" />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info">@TempData["InfoMessage"]</div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <p class="text-light mb-0">Yönettiğiniz tüm kursları buradan kontrol edebilirsiniz.</p>
+    <a asp-action="Create" class="btn btn-success btn-lg">➕ Yeni Kurs Aç</a>
+</div>
+
+@if (Model.Courses != null && Model.Courses.Any())
+{
+    <div class="row g-4">
+        @foreach (var course in Model.Courses)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow border-0 h-100 bg-light text-dark card-course">
+
+                    <!-- KURS GÖRSELİ -->
+                    @{
+                        string imageUrl = string.IsNullOrEmpty(course.ImageUrl)
+                        ? "https://via.placeholder.com/400x180/0d6efd/ffffff?text=Kurs+Görseli"
+                        : course.ImageUrl;
+                    }
+
+                    <img src="@imageUrl" class="card-img-top" style="height:180px; object-fit:cover;" />
+
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="card-title text-primary">@course.Title</h5>
+                        <span class="badge bg-secondary mb-2">@course.Category.Name</span>
+
+                        <p class="card-text small text-muted">
+                            @course.Description.Substring(0, Math.Min(course.Description.Length, 90))...
+                        </p>
+
+                        <div class="mt-auto pt-3 border-top">
+
+                            <!-- ✅ 1. KURS DETAYI -->
+                            <a asp-action="Details"
+                               asp-route-id="@course.CourseId"
+                               class="btn btn-primary btn-sm w-100 mb-1">
+                                🔎 Kurs Detayı / Kayıt
+                            </a>
+
+                            <!-- ✅ 2. MODÜL YÖNETİMİ -->
+                            <a asp-action="ManageModules"
+                               asp-route-courseId="@course.CourseId"
+                               class="btn btn-purple btn-sm w-100 mb-1">
+                                📂 Modül Yönetimi
+                            </a>
+
+                            <!-- ✅ 3. DÜZENLE -->
+                            <a asp-action="Edit"
+                               asp-route-id="@course.CourseId"
+                               class="btn btn-info btn-sm w-100 mb-1">
+                                ✏ Düzenle
+                            </a>
+
+                            <!-- ✅ 4. SİL (TEK TEHLİKELİ BUTON) -->
+                            <form asp-action="Delete"
+                                  asp-route-id="@course.CourseId"
+                                  method="get">
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm w-100"
+                                        onclick="return confirm('Bu kursu silmek istediğinizden emin misiniz?');">
+                                    🗑 Sil
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        Henüz yönettiğiniz hiçbir kurs bulunmamaktadır. Hemen bir kurs açın!
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

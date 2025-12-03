@@ -1,0 +1,65 @@
+﻿@model List<WebProgramlamaProje.Models.InstructorApplication>
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Eğitmen Başvuru Onayı";
+}
+
+<h3 class="text-primary">Eğitmen Başvuru Onayı (Admin Paneli)</h3>
+<hr />
+
+@* Başarılı onay mesajlarını göstermek için *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <p>Onay bekleyen toplam **@Model.Count** başvuru bulunmaktadır.</p>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Başvuran (Email)</th>
+                <th>Deneyim Özeti</th>
+                <th>Başvuru Tarihi</th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                <tr>
+                    <td>@app.Applicant.Email</td>
+                    <td>@app.ExperienceSummary</td>
+                    <td>@app.ApplicationDate.ToShortDateString()</td>
+                    <td>
+                        @* Admin'in ApproveInstructor aksiyonuna POST yapması *@
+                        <form asp-action="ApproveInstructor" method="post" style="display:inline;">
+                            <input type="hidden" name="applicantId" value="@app.ApplicantId" />
+                            <input type="hidden" name="applicationId" value="@app.Id" />
+
+                            @* 🚨 ONAY BUTONU *@
+                            <button type="submit" class="btn btn-sm btn-success"
+                                    onclick="return confirm('@app.Applicant.Email kullanıcısını eğitmen olarak onaylıyor musunuz?');">
+                                Eğitmen Yap & Onayla
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">Onay bekleyen yeni eğitmen başvurusu bulunmamaktadır.</div>
+}
+
+@section Scripts {
+    @{
+        // İstemci tarafı doğrulama scriptlerine burada gerek yok, ama her view'a koymak alışkanlık olmalı.
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

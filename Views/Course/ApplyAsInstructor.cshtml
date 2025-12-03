@@ -1,0 +1,55 @@
+﻿@model WebProgramlamaProje.ViewModels.InstructorApplyViewModel
+
+@{
+    ViewData["Title"] = "Eğitmen Olmak İçin Başvuru";
+    // Bu sayfanın koyu arka plan üzerinde beyaz metinle çalışmasını sağlıyoruz.
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+
+        @* Başlık ve Bilgi Alanı *@
+        <h3 class="text-light fw-bold">Eğitmen Olmak İçin Başvuru</h3>
+        <p class="lead text-light">WebProgramlamaProje eğitmeni olmak için sadece bir adım kaldı.</p>
+        <hr class="text-light" />
+
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-warning">@TempData["InfoMessage"]</div>
+        }
+
+        @* --- FORMU BEYAZ KARTA ALMA (Daha Okunaklı) --- *@
+        <div class="card shadow-lg p-4 rounded-3">
+            <div class="card-body">
+
+                <h5 class="text-primary mb-3">Deneyiminizi Paylaşın</h5>
+
+                <form asp-action="ApplyAsInstructor" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group mb-4">
+                        @* 🚨 LABEL DÜZENLEMESİ: text-dark sınıfını kaldırdık *@
+                        <label asp-for="ExperienceSummary" class="control-label"></label>
+                        <textarea asp-for="ExperienceSummary" class="form-control" rows="5" placeholder="Lütfen deneyiminizi ve bu platformda ders verme motivasyonunuzu kısaca özetleyin (Örn: 5 yıllık C# tecrübem var...)"></textarea>
+                        @* Hata mesajı normal (text-danger) olarak kalmalı *@
+                        <span asp-validation-for="ExperienceSummary" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-4 text-center">
+                        <input type="submit" value="Başvuruyu Gönder" class="btn btn-success btn-lg" />
+                        <a asp-action="Index" class="btn btn-secondary btn-lg">İptal</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

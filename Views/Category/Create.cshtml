@@ -1,0 +1,37 @@
+﻿@model WebProgramlamaProje.Models.Category
+@* Bu form için Category Entity modelini kullanabiliriz. *@
+
+@{
+    ViewData["Title"] = "Yeni Kategori Ekle";
+}
+
+<h3>Yeni Kategori Ekle</h3>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            @* Ödev Zorunluluğu: Hata mesajları için Data Validation Summary *@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                @* Ödev Zorunluluğu: Hata mesajlarını göstermek için asp-validation-for *@
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Ekle" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Listeye Geri Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        // İstemci tarafı (Client-side) doğrulama scriptlerini ekler
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

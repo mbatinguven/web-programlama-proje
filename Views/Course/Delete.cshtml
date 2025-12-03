@@ -1,0 +1,21 @@
+﻿@model WebProgramlamaProje.Models.Course
+
+@{
+    ViewData["Title"] = "Kurs Silme Onayı";
+}
+
+<h3 class="text-danger">Uyarı: Kursu Kalıcı Olarak Siliyorsunuz!</h3>
+<hr />
+<h4>"@Model.Title" adlı kursu silmek istediğinizden emin misiniz?</h4>
+
+<dl class="row">
+    <dt class="col-sm-3">Kategori:</dt>
+    <dd class="col-sm-9">@Model.Category.Name</dd>
+    <dt class="col-sm-3">Açıklama:</dt>
+    <dd class="col-sm-9">@Model.Description</dd>
+</dl>
+
+<form asp-action="DeleteConfirmed" asp-route-id="@Model.CourseId" method="post">
+    <input type="submit" value="Evet, Kursu Sil" class="btn btn-danger" />
+    <a asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-secondary">İptal</a>
+</form>

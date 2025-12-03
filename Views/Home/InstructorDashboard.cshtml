@@ -1,0 +1,68 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Eğitmen Kontrol Paneli";
+}
+
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="display-5 text-primary mb-4">Merhaba Eğitmen, @User.Identity.Name!</h1>
+        </div>
+    </div>
+
+    @* --- BÖLÜM 1: GÖREVLER VE İSTATİSTİK KARTLARI --- *@
+    <div class="row mb-5">
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg p-4 h-100 bg-warning text-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Bekleyen Görev</h5>
+                    <p class="card-text lead">
+                        Hâlâ modül eklemediğiniz kurslar var. Hemen düzenleyin!
+                    </p>
+                    <a asp-controller="Course" asp-action="MyCoursesTeaching" class="btn btn-dark mt-3">Kurslarımı Yönet</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow p-4 h-100 card-course">
+                <div class="card-body">
+                    <h5 class="card-title text-primart">Toplam Kursum</h5>
+                    <h2 class="display-4 text-primary">3</h2>
+                    <a asp-controller="Course" asp-action="MyCoursesTeaching" class="btn btn-sm btn-outline-primary">Tüm Kurslarım</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card shadow p-4 h-100 card-course">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Toplam Öğrenciniz</h5>
+                    <h2 class="display-4 text-success">56</h2>
+                    <a href="#" class="btn btn-sm btn-outline-success">Öğrenci Detayları</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-4" />
+
+    @* --- BÖLÜM 2: YÖNETİM HIZLI ERİŞİM --- *@
+    <div class="row">
+        <div class="col-12">
+            <h4 class="mb-4">Hızlı Erişim</h4>
+        </div>
+
+        <div class="col-md-4">
+            <a asp-controller="Course" asp-action="Create" class="btn btn-primary w-100 mb-2">Yeni Kurs Aç</a>
+        </div>
+        <div class="col-md-4">
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-info w-100 mb-2">Profil/Maaş Bilgileri</a>
+        </div>
+    </div>
+
+</div>

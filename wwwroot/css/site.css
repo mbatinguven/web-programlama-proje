@@ -1,0 +1,465 @@
+/* ============================================================
+   1. GLOBAL RESET ve BODY ARKA PLAN
+============================================================ */
+body {
+    background-image: url('/images/arkaplan.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #1c2833; /* fallback */
+    padding-top: 56px;
+    min-height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* ============================================================
+   2. IDENTITY SAYFALARINA ÖZEL HAREKETLÝ ARKA PLAN
+============================================================ */
+.identity-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(-45deg, #2c3e50, #34495e, #1c2833, #0d1a26);
+    background-size: 400% 400%;
+    animation: gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* ============================================================
+   3. HERO SECTION
+============================================================ */
+.hero-section {
+    position: relative;
+    padding: 8rem 0;
+    color: #f8f9fa;
+    background-color: rgba(0, 0, 0, 0.65);
+    background-blend-mode: overlay;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+    .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: 800 !important;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+/* ============================================================
+   4. NAVBAR TASARIMI
+============================================================ */
+header nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    transition: background-color .3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #007bff !important;
+    transition: color .3s;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    transition: all .2s ease-in-out;
+    padding-bottom: 5px;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #fff !important;
+        border-bottom: 2px solid #007bff;
+    }
+
+/* ============================================================
+   5. FÝLTRELEME KUTUSU (Katalog üstü)
+============================================================ */
+.katalog-filtre-kart {
+    background-color: #fff !important;
+    border-left: 5px solid #007bff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+    .katalog-filtre-kart .form-control {
+        border-radius: 6px;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+/* Baþlýk */
+.katalog-baslik {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #007bff !important;
+    letter-spacing: .5px;
+    text-shadow: 1px 1px 1px #ccc, 0 0 10px rgba(0,123,255,0.7);
+}
+
+/* ============================================================
+   6. KURS KARTLARI (PROFESYONEL TASARIM)
+============================================================ */
+.card-course {
+    background-color: #fff !important;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+    .card-course:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Kurs görseli */
+    .card-course .card-img-top {
+        height: 180px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    /* Baþlýk */
+    .card-course .card-title {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: #1c2833 !important;
+    }
+
+    /* Alt kategori */
+    .card-course .card-subtitle {
+        font-size: .9rem;
+        font-weight: 600;
+        color: #555 !important;
+    }
+
+/* Eðitmen */
+.course-instructor {
+    font-size: .85rem;
+    opacity: .7;
+}
+
+/* Açýklama */
+.course-desc {
+    font-size: .9rem;
+    color: #666;
+}
+
+/* Kart içi buton */
+.btn-course {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   7. BUTONLAR
+============================================================ */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+.btn-success {
+    font-weight: 600;
+    letter-spacing: .4px;
+    box-shadow: 0 10px 20px rgba(16,185,129,.4);
+}
+.btn-lg {
+    border-radius: 14px;
+    transition: .25s ease;
+}
+
+    .btn-lg:hover {
+        transform: translateY(-2px);
+    }
+
+.btn-purple {
+    background: linear-gradient(135deg, #7c3aed, #4c1d95);
+    color: #fff !important;
+    border: none;
+}
+
+    .btn-purple:hover {
+        background: linear-gradient(135deg, #6d28d9, #3b0764);
+    }
+
+
+/* ============================================================
+   8. FOOTER TASARIMLARI
+============================================================ */
+.custom-footer {
+    width: 100%;
+    padding: 15px 0;
+    background-color: #34495e;
+    color: #f8f9fa !important;
+    text-align: center;
+    font-size: .9rem;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+}
+
+    .custom-footer a {
+        color: #f8f9fa;
+        text-decoration: underline;
+    }
+
+        .custom-footer a:hover {
+            color: #ffd700;
+        }
+
+/* --- Profesyonel Footer --- */
+.professional-footer {
+    width: 100%;
+    padding: 30px 0;
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    color: #f8f9fa;
+    text-align: center;
+    font-size: .95rem;
+    box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
+}
+
+    .professional-footer a {
+        color: #1abc9c;
+        text-decoration: none;
+        transition: .3s;
+    }
+
+        .professional-footer a:hover {
+            color: #16a085;
+            text-decoration: underline;
+        }
+
+    .professional-footer .footer-links {
+        margin: 15px 0;
+    }
+
+    .professional-footer .social-icons a {
+        margin: 0 8px;
+        color: #f8f9fa;
+        font-size: 1.2rem;
+        transition: .3s, transform .2s;
+    }
+
+        .professional-footer .social-icons a:hover {
+            color: #1abc9c;
+            transform: translateY(-3px);
+        }
+/* ========== HERO BANNER ========== */
+.course-hero-banner {
+    background-size: cover;
+    background-position: center;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+ .course-hero-banner h1 {
+        font-size: 2.6rem;
+        letter-spacing: .5px;
+    }
+ .course-hero-banner .lead {
+        font-size: 1.1rem;
+        max-width: 720px;
+    }
+.course-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.75), rgba(0,0,0,0.9));
+    z-index: 1;
+}
+.course-hero-banner .container {
+    z-index: 2;
+}
+
+.text-shadow {
+    text-shadow: 0 3px 15px rgba(0,0,0,.6);
+}
+
+/* ========== BÖLÜM BAÞLIKLARI ========== */
+.section-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+/* ========== MODERN ACCORDION ========== */
+.modern-accordion .accordion-button {
+    background: #f8f9fa;
+    font-size: 1.05rem;
+}
+
+    .modern-accordion .accordion-button:not(.collapsed) {
+        background: #e8f0ff;
+        color: #0d6efd;
+    }
+
+.modern-accordion .accordion-item {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ========== VÝDEO FRAME ========== */
+.video-wrapper {
+    position: relative;
+    padding-top: 56.25%;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+}
+
+    .video-wrapper iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+/* ========== SAÐ PANEL ========== */
+.sticky-lg-top {
+    border-radius: 20px;
+    background: linear-gradient(145deg, #ffffff, #f3f4f6);
+}
+
+/* ============================================================
+   9. SAYFA YÜKSEKLÝK YARDIMCISI
+============================================================ */
+.page-content {
+    min-height: 70vh;
+}
+.glass-box {
+    padding: 20px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 10px 25px rgba(0,0,0,.15);
+    backdrop-filter: blur(8px);
+}
+
+.modern-accordion .accordion-item {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modern-accordion .accordion-button {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    font-size: 1rem;
+}
+
+    .modern-accordion .accordion-button:not(.collapsed) {
+        background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
+    }
+
+.modern-accordion .accordion-body {
+    border-top: 2px solid #e5e7eb;
+}
+/* ============================================================
+   ? 10. KURS DETAY YAZI DÜZENÝ & HÝYERARÞÝ DÜZELTMELERÝ
+============================================================ */
+
+/* HERO içi baþlýk ve açýklama daha estetik */
+.course-hero-banner h1 {
+    line-height: 1.2;
+}
+
+.course-hero-banner .lead {
+    line-height: 1.6;
+    opacity: .9;
+}
+.course-info {
+    color: #1c2833 !important;
+}
+/* Kurs Bilgileri satýr düzeni */
+.course-info ul li {
+    color: #333 !important;
+    font-weight: 500;
+    padding: 8px 0;
+    font-size: .95rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #ddd;
+}
+    .course-info ul li strong {
+        color: #000 !important;
+    }
+
+    .course-info ul li:last-child {
+        border-bottom: none;
+    }
+.course-info h5 {
+    color: #0d6efd !important;
+    font-weight: 700;
+}
+
+/* Sol alan kurs içeriði açýklama yazýsý */
+.page-content p.small.text-muted {
+    font-size: .95rem;
+    opacity: .85;
+}
+
+/* Sað panel yazýlarý daha net */
+.card-body p {
+    font-size: .95rem;
+    line-height: 1.5;
+}
+
+
+/* ============================================================
+   ? 11. SAHTE ÖDEME & YÜKLENÝYOR EKRANI TASARIMI
+============================================================ */
+
+#paymentStatus {
+    background: linear-gradient(135deg, #e9fdf2, #d1fae5);
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid #a7f3d0;
+}
+
+    #paymentStatus .spinner-border {
+        width: 2.4rem;
+        height: 2.4rem;
+    }
+
+#paymentText {
+    font-size: 1.05rem;
+    letter-spacing: .3px;
+}
+
+
+/* ============================================================
+   ? 12. HEMEN AL BUTON VURGUSU
+============================================================ */
+
+#buyNowBtn {
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    border: none;
+}
+
+    #buyNowBtn:hover {
+        background: linear-gradient(135deg, #16a34a, #166534);
+    }
+

@@ -1,0 +1,99 @@
+﻿@model WebProgramlamaProje.ViewModels.CourseCreateViewModel
+
+@{
+    ViewData["Title"] = "Kursu Düzenle";
+}
+
+<h3 class="text-warning">Kursu Düzenle</h3>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="CourseId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CategoryId"></label>
+                <select asp-for="CategoryId" class="form-control">
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.CategoryId">@category.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- ✅ FİYAT -->
+            <div class="form-group mb-3">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+            </div>
+
+            <!-- ✅ DİL -->
+            <div class="form-group mb-3">
+                <label asp-for="Language"></label>
+                <select asp-for="Language" class="form-control">
+                    <option>Türkçe</option>
+                    <option>İngilizce</option>
+                    <option>Almanca</option>
+                    <option>Fransızca</option>
+                </select>
+            </div>
+
+            <!-- ✅ SEVİYE -->
+            <div class="form-group mb-3">
+                <label asp-for="Level"></label>
+                <select asp-for="Level" class="form-control">
+                    <option>Başlangıç</option>
+                    <option>Orta Seviye</option>
+                    <option>İleri Seviye</option>
+                </select>
+            </div>
+
+            <!-- ✅ SÜRE -->
+            <div class="form-group mb-3">
+                <label asp-for="Duration"></label>
+                <input asp-for="Duration" class="form-control" />
+            </div>
+
+            <!-- ✅ MEVCUT GÖRSEL -->
+            @if (!string.IsNullOrEmpty(Model.ExistingImageUrl))
+            {
+                <div class="mb-3">
+                    <label>Mevcut Kurs Görseli</label><br />
+                    <img src="@Model.ExistingImageUrl" class="img-fluid rounded shadow" style="max-height:200px;" />
+                </div>
+            }
+
+            <!-- ✅ YENİ GÖRSEL -->
+            <div class="form-group mb-3">
+                <label asp-for="CourseImage"></label>
+                <input asp-for="CourseImage" type="file" class="form-control" />
+            </div>
+
+            <div class="form-group mt-4">
+                <button type="submit" class="btn btn-warning">Güncelle</button>
+                <a asp-action="MyCoursesTeaching" class="btn btn-secondary">İptal</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

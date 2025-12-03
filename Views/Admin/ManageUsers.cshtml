@@ -1,0 +1,139 @@
+﻿@model WebProgramlamaProje.ViewModels.UserManagementViewModel
+
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+}
+
+<h3 class="text-white display-5">Kullanıcı Yönetimi</h3>
+<hr class="text-white" />
+
+@* Başarı/Hata mesajları *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<ul class="nav nav-tabs" id="userTabs" role="tablist">
+    @* 🚨 KRİTİK DÜZELTME: Active durumda da metni beyaz yapıyoruz *@
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active text-primary" id="instructor-tab" data-bs-toggle="tab" data-bs-target="#instructor-pane" type="button" role="tab" aria-controls="instructor-pane" aria-selected="true">Eğitmenler (@Model.Instructors.Count)</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link text-primary" id="student-tab" data-bs-toggle="tab" data-bs-target="#student-pane" type="button" role="tab" aria-controls="student-pane" aria-selected="false">Öğrenciler (@Model.Students.Count)</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link text-primary" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin-pane" type="button" role="tab" aria-controls="admin-pane" aria-selected="false">Adminler (@Model.Admins.Count)</button>
+    </li>
+</ul>
+
+<div class="tab-content" id="userTabsContent">
+
+    @* --- EĞİTMENLER TABLOSU --- *@
+    <div class="tab-pane fade show active" id="instructor-pane" role="tabpanel" aria-labelledby="instructor-tab" tabindex="0">
+        @* 🚨 TABLO BAŞLIĞI BEYAZ VE DAHA BÜYÜK YAPILDI *@
+        <h4 class="mt-4 text-primary">Eğitmenler</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-primary fs-5">Email</th>
+                    <th class="text-primary fs-5">Rol</th>
+                    <th class="text-primary fs-5">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Instructors)
+                {
+                    <tr>
+                        <td class="text-white fs-6">@user.Email</td>
+                        <td class="text-white fs-6">Eğitmen</td>
+                        <td>
+                            @* Role Kaldırma İşlemi *@
+                            <form asp-action="ToggleInstructorRole" method="post" style="display:inline;">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('@user.Email kullanıcısının Eğitmen rolü kaldırılacak. Emin misiniz?');">Rolü Kaldır</button>
+                            </form>
+
+                            @* Kalıcı Silme *@
+                            <form asp-action="DeleteUser" method="post" style="display:inline;">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <button type="submit" class="btn btn-sm btn-dark" onclick="return confirm('@user.Email kullanıcısını KALICI OLARAK SİLMEK istediğinizden emin misiniz?');">Kalıcı Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* --- ÖĞRENCİLER TABLOSU (Aynı Düzeltmeler Uygulandı) --- *@
+    <div class="tab-pane fade" id="student-pane" role="tabpanel" aria-labelledby="student-tab" tabindex="0">
+        <h4 class="mt-4 text-primary">Öğrenciler</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-primary fs-5">Email</th>
+                    <th class="text-primary fs-5">Rol</th>
+                    <th class="text-primary fs-5">Sil/Yönet</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Students)
+                {
+                    <tr>
+                        <td class="text-white fs-6">@user.Email</td>
+                        <td class="text-white fs-6">Öğrenci</td>
+                        <td>
+                            @* Kalıcı Silme *@
+                            <form asp-action="DeleteUser" method="post" style="display:inline;">
+                                <input type="hidden" name="userId" value="@user.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('@user.Email kullanıcısını KALICI OLARAK SİLMEK istediğinizden emin misiniz?');">Kalıcı Sil</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* --- ADMINLER TABLOSU --- *@
+    <div class="tab-pane fade" id="admin-pane" role="tabpanel" aria-labelledby="admin-tab" tabindex="0">
+        <h4 class="mt-4 text-primary">Adminler</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-primary fs-5">Email</th>
+                    <th class="text-primary fs-5">Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Admins)
+                {
+                    <tr>
+                        <td class="text-white fs-6">@user.Email</td>
+                        <td class="text-white fs-6">Admin</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Bootstrap'in sekme işlevselliğini etkinleştirme
+        var triggerTabList = [].slice.call(document.querySelectorAll('#userTabs button'));
+        triggerTabList.forEach(function (triggerEl) {
+          var tabTrigger = new bootstrap.Tab(triggerEl);
+
+          triggerEl.addEventListener('click', function (event) {
+            event.preventDefault();
+            tabTrigger.show();
+          });
+        });
+    </script>
+}

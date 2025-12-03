@@ -1,0 +1,102 @@
+﻿@model WebProgramlamaProje.ViewModels.CourseCreateViewModel
+@* View Model: CourseCreateViewModel kullanılıyor *@
+
+@{
+    ViewData["Title"] = "Yeni Kurs Aç";
+}
+
+<h3 class="text-primary">Yeni Kurs Aç</h3>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        @* 🚨 KRİTİK DÜZELTME: Dosya yüklemek için enctype eklenmeli *@
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* Kurs Başlığı *@
+            <div class="form-group mb-3">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            @* Açıklama *@
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            @* Kategori Dropdown *@
+            <div class="form-group mb-3">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control">
+                    <option value="">-- Kategori Seçiniz --</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.CategoryId">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            @* ✅ KURS FİYATI *@
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            @* ✅ KURS DİLİ *@
+            <div class="form-group mb-3">
+                <label asp-for="Language" class="control-label"></label>
+                <select asp-for="Language" class="form-control">
+                    <option>Türkçe</option>
+                    <option>İngilizce</option>
+                    <option>Almanca</option>
+                    <option>Fransızca</option>
+                </select>
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+
+            @* ✅ KURS SEVİYESİ *@
+            <div class="form-group mb-3">
+                <label asp-for="Level" class="control-label"></label>
+                <select asp-for="Level" class="form-control">
+                    <option>Başlangıç</option>
+                    <option>Orta Seviye</option>
+                    <option>İleri Seviye</option>
+                </select>
+                <span asp-validation-for="Level" class="text-danger"></span>
+            </div>
+
+            @* ✅ KURS SÜRESİ *@
+            <div class="form-group mb-3">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" placeholder="Örn: 12 Saat" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+
+            @* 💡 GÖRSEL YÜKLEME ALANI (ZATEN SENDEN)*@
+            <div class="form-group mb-3">
+                <label asp-for="CourseImage" class="form-label"></label>
+                <input asp-for="CourseImage" type="file" class="form-control" accept="image/*" />
+                <span asp-validation-for="CourseImage" class="text-danger"></span>
+                <small class="form-text text-muted">Kursunuzu temsil edecek bir görsel yükleyin.</small>
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Kursu Yayınla" class="btn btn-success" />
+                <a asp-action="MyCoursesTeaching" class="btn btn-secondary">İptal</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        // Ödev Zorunluluğu: İstemci tarafı doğrulama scriptlerini ekle
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,62 @@
+﻿@model WebProgramlamaProje.ViewModels.ModuleCreateViewModel
+
+@{
+    ViewData["Title"] = "Modül Düzenleme";
+    // Arka plan görselinden dolayı metinleri görünür yapmak için
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@* 🚨 Başlıkları ve metinleri görünür hale getiriyoruz *@
+<h3 class="text-white">Modül Düzenleme: @Model.Title</h3>
+<hr class="text-white" />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        @* Formu kart içine alarak okunurluğu artırıyoruz *@
+        <div class="card shadow-lg p-4 rounded-3">
+            <div class="card-body">
+
+                @* 💡 DİKKAT: asp-action EditModule olmalı ve modülün ID'si route'a eklenmeli *@
+                <form asp-action="EditModule" asp-route-id="@Model.ModuleId" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    @* Kurs ID'sini ve Modül ID'sini gizli alanda tutuyoruz *@
+                    <input type="hidden" asp-for="CourseId" />
+                    <input type="hidden" asp-for="ModuleId" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Content" class="control-label"></label>
+                        <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+
+                    @* 🚨 VİDEO ID ALANI (Gerekli Entegrasyon) *@
+                    <div class="form-group mb-3">
+                        <label asp-for="VideoLink" class="control-label">Video ID (Örn: dQw4w9WgXcQ)</label>
+                        <input asp-for="VideoLink" class="form-control" />
+                        <span asp-validation-for="VideoLink" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mt-4 text-center">
+                        <input type="submit" value="Kaydet" class="btn btn-warning" />
+
+                        @* Modül Yönetim sayfasına geri dön *@
+                        <a asp-action="ManageModules" asp-route-courseId="@Model.CourseId" class="btn btn-secondary">İptal / Yönetime Dön</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

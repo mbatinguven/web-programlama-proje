@@ -1,0 +1,93 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Yeni Hesap Oluştur";
+}
+
+@* 💡 1. KRİTİK: HAREKETLİ ARKA PLAN (Sadece bu sayfada görünür) *@
+<div class="identity-background"></div>
+
+<div class="row justify-content-center mt-5">
+
+    @* --- Sol Sütun: Kayıt Formu Kartı --- *@
+    <div class="col-md-5 col-lg-5">
+        @* Kartı gölgeli ve hafif şeffaf beyaz yaptık (CSS'teki .card sınıfından alır) *@
+        <div class="card shadow-lg border-0 p-4 rounded-3">
+            <div class="card-body">
+                <h3 class="card-title text-center text-primary mb-4">E-Öğrenme Hesabınızı Oluşturun</h3>
+                <p class="text-center text-muted small mb-4">Hemen kaydolun ve binlerce kursa erişin.</p>
+                <hr />
+
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger small mb-3" role="alert"></div>
+
+                    @* Email *@
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="E-posta Adresiniz" />
+                        <label asp-for="Input.Email">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+
+                    @* Şifre *@
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Şifre" />
+                        <label asp-for="Input.Password">Şifre</label>
+                        <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                    </div>
+
+                    @* Şifre Tekrar *@
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Şifre Tekrar" />
+                        <label asp-for="Input.ConfirmPassword">Şifre Tekrar</label>
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-success mt-3">Kayıt Ol</button>
+
+                    <p class="mt-4 text-center small">
+                        Zaten hesabınız var mı? <a asp-page="./Login">Giriş Yapın</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @* --- Sağ Sütun: Görsel Vurgu ve Harici Girişler --- *@
+    <div class="col-md-5 col-lg-5 mt-4 mt-md-0">
+        <section>
+            @* 🚨 KARANLIK/VURGU KARTI *@
+            <div class="card shadow-lg border-0 p-4 bg-dark text-primary rounded-3">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Hemen Başlayın!</h4>
+                    <p>WebProgramlamaProje'de, kariyerinizi ilerletecek yüzlerce kurs sizi bekliyor. Kayıt olarak şunlara sahip olursunuz:</p>
+                    <ul class="list-unstyled mt-3">
+                        @* Font Awesome ikonlarını kullanmak için _Layout.cshtml'e Font Awesome kütüphanesini eklemeniz gerekebilir. *@
+                        <li>Uzman Eğitmenlerden Eğitim</li>
+                        <li>Kendi hızınızda öğrenme imkanı</li>
+                        <li>Eğitmen olma ve kurs yayınlama yetkisi (Onay sonrası).</li>
+                    </ul>
+
+                    @* Harici Girişler *@
+                    @if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                    {
+                        <hr class="my-3" />
+                        <h5 class="card-title mb-3">Ya da Sosyal Hesaplarınızla Kaydolun</h5>
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-light w-100 mb-2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                    @provider.DisplayName ile Kayıt Ol
+                                </button>
+                            }
+                        </form>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

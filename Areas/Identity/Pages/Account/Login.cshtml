@@ -1,0 +1,102 @@
+﻿@page
+@model LoginModel
+
+@{
+    // Başlığı Türkçeleştirme
+    ViewData["Title"] = "Giriş Yap";
+}
+
+@* 💡 HAREKETLİ ARKA PLAN: Sadece bu sayfada görünür (site.css'ten alır) *@
+<div class="identity-background"></div>
+
+<div class="row justify-content-center mt-5">
+
+    @* --- Sol Sütun: Giriş Formu Kartı --- *@
+    <div class="col-md-5 col-lg-5">
+        @* Kartı gölgeli ve hafif şeffaf yaptık (CSS'teki .card sınıfından alır) *@
+        <div class="card shadow-lg border-0 p-4 rounded-3">
+            <div class="card-body">
+                <h3 class="card-title text-center text-primary mb-4">Hesabınıza Giriş Yapın</h3>
+                <p class="text-center text-muted small mb-4">E-posta ve şifrenizle devam edin.</p>
+                <hr />
+
+                <section>
+                    <form id="account" method="post">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3" role="alert"></div>
+
+                        @* Email *@
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                            <label asp-for="Input.Email" class="form-label">Email</label>
+                            <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                        </div>
+
+                        @* Password *@
+                        <div class="form-floating mb-3">
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Şifre" />
+                            <label asp-for="Input.Password" class="form-label">Şifre</label>
+                            <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                        </div>
+
+                        @* Remember Me *@
+                        <div class="checkbox mb-3">
+                            <label asp-for="Input.RememberMe" class="form-label small">
+                                <input class="form-check-input" asp-for="Input.RememberMe" />
+                                Beni Hatırla
+                            </label>
+                        </div>
+
+                        <div>
+                            <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary mt-2">Giriş Yap</button>
+                        </div>
+
+                        <p class="mt-4 text-center small ">
+                            <a id="forgot-password" asp-page="./ForgotPassword">Şifrenizi mi unuttunuz?</a>
+                        </p>
+                        <p class="text-center small">
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Yeni hesap oluşturun</a>
+                        </p>
+                    </form>
+                </section>
+
+            </div> @* end card-body *@
+        </div> @* end card *@
+    </div> @* end col *@
+
+    @* --- Sağ Sütun: Harici Girişler ve Vurgu (Tasarım Bütünlüğü İçin) --- *@
+    <div class="col-md-5 col-lg-5 mt-4 mt-md-0">
+        <section>
+            @* Karanlık Vurgu Kartı *@
+            <div class="card shadow-lg border-0 p-4 bg-dark text-primary rounded-3">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Tekrar Hoş Geldiniz!</h4>
+                    <p>En son bıraktığınız kurstan devam etmek için hemen giriş yapın.</p>
+
+                    @* Harici Girişler (Sadece varsa gösterilir) *@
+                    @if ((Model.ExternalLogins?.Count ?? 0) != 0)
+                    {
+                        <hr class="my-3" />
+                        <h5 class="card-title mb-3">Ya da Sosyal Hesaplarınızla Giriş Yapın</h5>
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            @foreach (var provider in Model.ExternalLogins!)
+                            {
+                                <button type="submit" class="btn btn-outline-light w-100 mb-2" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                    @provider.DisplayName ile Giriş Yap
+                                </button>
+                            }
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info small mt-4 text-primary">Harici servisler şu an aktif değildir.</div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

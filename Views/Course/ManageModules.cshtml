@@ -1,0 +1,127 @@
+﻿@model WebProgramlamaProje.ViewModels.ModuleCreateViewModel
+
+@{
+    ViewData["Title"] = "Modül Yönetimi";
+}
+
+@* Başlıkları karanlık arka plan üzerinde okunur hale getirme *@
+<h3 class="text-primary display-5">Modül Yönetimi (@Model.CourseTitle)</h3>
+<hr class="text-white" />
+
+@* Başarı/Hata mesajlarını göstermek için *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info">@TempData["InfoMessage"]</div>
+}
+
+<div class="row">
+    @* --- SOL SÜTUN: YENİ MODÜL EKLEME FORMU --- *@
+    <div class="col-md-6">
+        <h4 class="text-primary">Yeni Modül Ekle</h4>
+
+        <div class="card shadow-lg p-4 rounded-3 bg-white">
+            <div class="card-body">
+                <form asp-action="AddModule" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    @* Kurs ID'sini post etmek için gizli alan *@
+                    <input type="hidden" asp-for="CourseId" />
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Content" class="control-label"></label>
+                        <textarea asp-for="Content" class="form-control" rows="5" placeholder="Modül içeriğini veya ders notlarını buraya yazın"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+
+                    @* 🚨 YENİ EKLENEN VİDEO ID ALANI *@
+                    <div class="form-group mb-3">
+                        <label asp-for="VideoLink" class="control-label">Video ID (Örn: YouTube'daki dQw4w9WgXcQ)</label>
+                        <input asp-for="VideoLink" class="form-control" placeholder="YouTube Video ID'sini girin" />
+                        <span asp-validation-for="VideoLink" class="text-danger"></span>
+                    </div>
+                    @* 💡 VİDEO ID ALANI BİTİŞİ *@
+
+                    <div class="form-group mt-4 text-center">
+                        <input type="submit" value="Modül Ekle" class="btn btn-success btn-lg" />
+                        <a asp-action="Details" asp-route-id="@Model.CourseId" class="btn btn-secondary btn-lg">Kurs Detayına Dön</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @* --- SAĞ SÜTUN: MEVCUT MODÜL LİSTESİ --- *@
+    <div class="col-md-6">
+        <h4 class="text-primary">Mevcut Modüller (@Model.ExistingModules.Count)</h4>
+
+        @if (Model.ExistingModules != null && Model.ExistingModules.Any())
+        {
+            <div class="accordion" id="modulesAccordion">
+                @foreach (var module in Model.ExistingModules.OrderBy(m => m.ModuleId))
+                {
+                    <div class="card mb-2 shadow-sm">
+                        <div class="card-header bg-light p-0" id="heading_@module.ModuleId">
+                            <h5 class="mb-0">
+                                <button class="btn btn-link text-dark w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@module.ModuleId" aria-expanded="false">
+                                    #@module.ModuleId - @module.Title
+                                </button>
+                            </h5>
+                        </div>
+
+                        <div id="collapse_@module.ModuleId" class="collapse" aria-labelledby="heading_@module.ModuleId" data-bs-parent="#modulesAccordion">
+                            <div class="card-body small">
+
+                                @if (!string.IsNullOrEmpty(module.VideoId))
+                                {
+                                    <h6 class="text-primary">Video ID:</h6>
+                                    <p class="text-secondary small">@module.VideoId</p>
+                                }
+
+                                <h6 class="mt-3">Metin İçeriği:</h6>
+                                <p class="text-dark">@module.Content</p>
+
+                                @* 💡 CRUD BUTONLARI *@
+                                <div class="mt-3 border-top pt-2">
+                                    <a asp-action="EditModule" asp-route-id="@module.ModuleId" class="btn btn-sm btn-info">Düzenle</a>
+
+                                    @* Silme Formu (DeleteModule aksiyonu olmalı) *@
+                                    <form asp-action="DeleteModule" asp-route-id="@module.ModuleId" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('@module.Title modülünü silmek istediğinizden emin misiniz?');">
+                                            Sil
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning mt-3">Bu kurs için henüz modül eklenmemiştir.</div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @* Bootstrap'in sekme/accordion işlevselliği için script gereklidir *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+}

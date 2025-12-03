@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h3 class="text-primary">Yönetici Kontrol Paneli</h3>
+<hr />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-success" role="alert">
+            Hoş geldiniz, @User.Identity.Name!
+            <br />
+            Lütfen sol menüdeki bağlantıları kullanarak sistemi denetleyin ve yönetin.
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Kullanıcı Yönetimi</h5>
+                <p class="card-text">Eğitmen ve Öğrenci rollerini denetleyin, rolleri değiştirin.</p>
+                <a asp-controller="Admin" asp-action="ManageUsers" class="btn btn-primary">Kullanıcıları Yönet</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Eğitmen Başvuruları</h5>
+                <p class="card-text">Onay bekleyen Eğitmenlik başvurularını inceleyin ve onaylayın.</p>
+                <a asp-controller="Course" asp-action="ManageApplications" class="btn btn-success">Başvuruları Onayla</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Kategori Yönetimi</h5>
+                <p class="card-text">Kurs kategorilerini düzenleyin veya silin.</p>
+                <a asp-controller="Category" asp-action="Index" class="btn btn-warning">Kategorileri Yönet</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+﻿@model WebProgramlamaProje.ViewModels.CourseListViewModel
+@using WebProgramlamaProje.Models
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Kurs Kataloğu";
+
+    var categories = ViewData["Categories"] as List<Category>;
+    var currentCategoryId = ViewData["CurrentCategoryId"];
+}
+
+<h3 class="text-primary fw-bold mb-3">Kurs Kataloğu</h3>
+<hr />
+
+<!-- ============================================================
+     FİLTRELEME KARTI
+============================================================ -->
+<div class="katalog-filtre-kart mb-4">
+    <h5 class="katalog-baslik mb-3">Kurs Kategorileri</h5>
+
+    <form asp-controller="Course" asp-action="Index" method="get" class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label for="categoryId" class="form-label small text-dark">Kategori Seçiniz:</label>
+            <select name="categoryId" id="categoryId" class="form-control">
+                <option value="">Tüm Kategoriler</option>
+                @foreach (var category in categories)
+                {
+                    <option value="@category.CategoryId"
+                            selected="@(category.CategoryId.ToString() == currentCategoryId?.ToString())">
+                        @category.Name
+                    </option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filtrele</button>
+        </div>
+
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-secondary w-100">Temizle</a>
+        </div>
+    </form>
+</div>
+
+<!-- ============================================================
+     KURS KARTLARI
+============================================================ -->
+@if (Model.Courses != null && Model.Courses.Any())
+{
+    <div class="row">
+        @foreach (var course in Model.Courses)
+        {
+            string imageUrl = string.IsNullOrEmpty(course.ImageUrl)
+            ? "https://via.placeholder.com/400x200/007bff/ffffff?text=Görsel+Yok"
+            : course.ImageUrl;
+
+            <div class="col-md-4 mb-4">
+                <div class="card card-course h-100">
+
+                    <!-- Görsel -->
+                    <img src="@imageUrl" alt="Kurs Görseli" class="card-img-top" />
+
+                    <div class="card-body d-flex flex-column">
+
+                        <h5 class="card-title">@course.Title</h5>
+
+                        <h6 class="card-subtitle mb-1">@course.Category.Name</h6>
+
+                        <p class="course-instructor">Eğitmen: @course.Instructor.UserName</p>
+
+                        <p class="course-desc">
+                            @course.Description.Substring(0, Math.Min(course.Description.Length, 90))...
+                        </p>
+
+                        <div class="mt-auto pt-3 border-top">
+                            <a asp-action="Details"
+                               asp-route-id="@course.CourseId"
+                               class="btn btn-primary btn-course w-100">
+                                Detayları Gör
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">Sistemde henüz hiçbir kurs bulunmamaktadır.</div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

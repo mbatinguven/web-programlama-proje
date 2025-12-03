@@ -1,0 +1,316 @@
+﻿@model WebProgramlamaProje.ViewModels.CourseDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Course.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string courseImage = string.IsNullOrEmpty(Model.Course.ImageUrl)
+        ? "https://via.placeholder.com/1200x400/000000/ffffff?text=Kurs+Görseli+Yok"
+        : Model.Course.ImageUrl;
+
+    string courseDuration = Model.Course.Duration ?? "Belirtilmedi";
+    int moduleCount = Model.Course.Modules?.Count() ?? 0;
+    string courseLevel = !string.IsNullOrEmpty(Model.Course.Level) ? Model.Course.Level : "Orta Seviye";
+    string courseLanguage = !string.IsNullOrEmpty(Model.Course.Language) ? Model.Course.Language : "Türkçe";
+    string coursePrice = Model.Course.Price > 0 ? Model.Course.Price.ToString("C") : "Ücretsiz";
+    int enrollmentCount = Model.EnrollmentCount;
+}
+
+<!-- ============================================================
+     HERO BANNER
+============================================================ -->
+<div class="course-hero-banner text-white"
+     style="background-image: url('@courseImage');">
+
+    <div class="course-hero-overlay"></div>
+
+    <div class="container position-relative py-5">
+
+        <h1 class="display-4 fw-bold text-shadow">@Model.Course.Title</h1>
+        <p class="lead text-light opacity-75">@Model.Course.Description</p>
+
+        <div class="mt-3">
+            <span class="badge bg-primary me-2">Kategori: @Model.Course.Category.Name</span>
+            <span class="badge bg-info text-dark">Eğitmen: @Model.Course.Instructor.UserName</span>
+        </div>
+
+        <div class="course-info glass-box mt-4">
+            <h5 class="fw-bold">Kurs Bilgileri</h5>
+            <ul class="list-unstyled mb-0">
+                <li><strong>Süre:</strong> @Model.Course.Duration</li>
+                <li><strong>Seviye:</strong> @Model.Course.Level</li>
+                <li><strong>Dil:</strong> @Model.Course.Language</li>
+                <li><strong>Fiyat:</strong> @String.Format("{0:C}", Model.Course.Price)</li>
+                <li><strong>Toplam Öğrenci:</strong> @Model.EnrollmentCount</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<!-- ============================================================
+     SAYFA ANA İÇERİĞİ
+============================================================ -->
+<div class="container py-5 page-content">
+
+    <div class="row">
+
+        <!-- ===================== SOL ANA İÇERİK ===================== -->
+        <div class="col-lg-8">
+
+            @* ✅ ÖĞRETMENE ÖZEL YÖNETİM PANELİ *@
+            @if (ViewBag.IsInstructorOwner == true)
+            {
+                <h3 class="section-title mb-4">📊 Kurs Yönetim Özeti</h3>
+
+                <div class="row">
+
+                    <!-- KART 1 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow text-center">
+                            <div class="card-body">
+                                <h6 class="text-muted">Toplam Öğrenci</h6>
+                                <h3 class="fw-bold text-success">@Model.EnrollmentCount</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KART 2 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow text-center">
+                            <div class="card-body">
+                                <h6 class="text-muted">Toplam Modül</h6>
+                                <h3 class="fw-bold text-primary">
+                                    @(Model.Course.Modules?.Count() ?? 0)
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- KART 3 -->
+                    <div class="col-md-4 mb-3">
+                        <div class="card shadow text-center">
+                            <div class="card-body">
+                                <h6 class="text-muted">Toplam Kazanç</h6>
+                                <h3 class="fw-bold text-warning">
+                                    ₺ @(Model.Course.Price* Model.EnrollmentCount)
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ✅ KAYITLI ÖĞRENCİLER -->
+                <div class="card shadow mt-4">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">👥 Kayıtlı Öğrenciler</h5>
+
+                        @if (Model.EnrolledStudents.Any())
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var student in Model.EnrolledStudents)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <span>👤 @student.UserName</span>
+                                        <span class="badge bg-secondary">@student.Email</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">
+                                Henüz kayıtlı öğrenci yok.
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                @* ✅ ÖĞRENCİ TARAFI – MODÜL GÖRÜNÜR *@
+
+                <h3 class="section-title mb-4">Kurs İçeriği (Modüller)</h3>
+
+                @if (Model.IsEnrolled)
+                {
+                    <div class="accordion modern-accordion" id="courseModulesAccordion">
+                        @foreach (var module in Model.Course.Modules.OrderBy(m => m.ModuleId))
+                        {
+                            <div class="accordion-item border-0 shadow-sm mb-3">
+
+                                <h2 class="accordion-header" id="heading_@module.ModuleId">
+                                    <button class="accordion-button collapsed fw-semibold"
+                                            type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse_@module.ModuleId">
+                                        🎬 @module.Title
+                                    </button>
+                                </h2>
+
+                                <div id="collapse_@module.ModuleId"
+                                     class="accordion-collapse collapse"
+                                     aria-labelledby="heading_@module.ModuleId"
+                                     data-bs-parent="#courseModulesAccordion">
+
+                                    <div class="accordion-body bg-white">
+
+                                        @if (!string.IsNullOrEmpty(module.VideoId))
+                                        {
+                                            <div class="video-wrapper mb-3">
+                                                <iframe src="https://www.youtube.com/embed/@module.VideoId"
+                                                        allowfullscreen></iframe>
+                                            </div>
+                                        }
+
+                                        <p class="text-dark">@module.Content</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info py-4 mt-3 shadow">
+                        <h5 class="fw-bold">📘 Kurs içeriğini görmek için kaydolmalısınız.</h5>
+                        <p>Modüllere erişebilmek için kursa katılım gereklidir.</p>
+                    </div>
+                }
+            }
+
+        </div>
+
+
+       
+        <!-- ===================== SAĞ YAN PANEL ===================== -->
+        <div class="col-lg-4">
+
+            <div class="card shadow-lg p-3 sticky-lg-top" style="top: 90px;">
+                <div class="card-body">
+
+                    <h4 class="text-primary fw-bold mb-3">Kurs Paneli</h4>
+
+                    <p class="mb-2"><strong>Toplam Öğrenci:</strong> @Model.EnrollmentCount</p>
+
+                    @* ✅ EĞİTMEN KENDİ KURSUNU GÖRÜYORSA *@
+                    @if (Model.Course.InstructorId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                    {
+                        <div class="alert alert-success mt-3">
+                            ✅ <strong>Bu kurs size aittir.</strong>
+                        </div>
+
+                        <a asp-action="ManageModules"
+                           asp-route-courseId="@Model.Course.CourseId"
+                           class="btn btn-purple w-100 btn-lg mt-2">
+                            📂 Modül Yönetimi
+                        </a>
+
+                        <a asp-action="Edit"
+                           asp-route-id="@Model.Course.CourseId"
+                           class="btn btn-info w-100 btn-lg mt-2">
+                            ✏ Kursu Düzenle
+                        </a>
+                    }
+                    else
+                    {
+                        @* ✅ ÖĞRENCİ AKIŞI *@
+                        @if (!Model.IsEnrolled)
+                        {
+                            <form asp-action="Enroll" method="post" id="realEnrollForm" class="mt-3">
+                                <input type="hidden" name="courseId" value="@Model.Course.CourseId" />
+
+                                <button type="button"
+                                        class="btn btn-success w-100 btn-lg"
+                                        id="buyNowBtn">
+                                    💳 Hemen Al
+                                </button>
+
+                                <div class="alert alert-info d-none mt-3 text-center" id="paymentStatus">
+                                    <span id="paymentText">Ödeme başlatılıyor...</span>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-action="Learn" asp-route-id="@Model.Course.CourseId"
+                               class="btn btn-primary w-100 btn-lg mt-3">
+                                🎓 Kursa Devam Et
+                            </a>
+                        }
+                    }
+
+                    <hr />
+
+                    <p class="small text-muted text-center">
+                        Kursa katıldığınızda tüm modüllerin kilidi açılır
+                        ve eğitime kaldığınız yerden devam edebilirsiniz.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+        @if (ViewBag.IsInstructorOwner == true)
+        {
+            <div class="card shadow-lg mt-4">
+                <div class="card-body">
+
+                    <h5 class="fw-bold text-primary mb-3">
+                        👥 Kayıtlı Öğrenciler (@Model.EnrolledStudents.Count)
+                    </h5>
+
+                    @if (Model.EnrolledStudents.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var student in Model.EnrolledStudents)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span>👤 @student.UserName</span>
+                                    <span class="badge bg-secondary">@student.Email</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning mb-0">
+                            Henüz bu kursa kayıtlı öğrenci yok.
+                        </div>
+                    }
+
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+</div>
+
+<!-- ============================================================
+     ✅ SAHTE ÖDEME & OTOMATİK KAYIT SCRIPT
+============================================================ -->
+<script>
+    const buyBtn = document.getElementById("buyNowBtn");
+    const paymentBox = document.getElementById("paymentStatus");
+    const paymentText = document.getElementById("paymentText");
+    const realForm = document.getElementById("realEnrollForm");
+
+    if (buyBtn) {
+        buyBtn.addEventListener("click", function () {
+            buyBtn.classList.add("d-none");
+            paymentBox.classList.remove("d-none");
+
+            paymentText.innerText = "İşleminiz gerçekleştiriliyor...";
+
+            setTimeout(() => {
+                paymentText.innerText = "Ödeme işlemi başarılı ✅";
+            }, 2500);
+
+            setTimeout(() => {
+                realForm.submit();
+            }, 4200);
+        });
+    }
+</script>

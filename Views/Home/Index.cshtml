@@ -1,0 +1,114 @@
+﻿@model dynamic
+@{
+    ViewData["Title"] = "Geleceğinizi Kodlayın";
+
+    // Varsayılan istatistikler ve örnek kurslar
+    var TotalCourses = 45;
+    var TotalStudents = 1200;
+}
+
+@* --- BÖLÜM 1: ANA BAŞLIK VE HAREKETE GEÇİRME (HERO SECTION) --- *@
+<div class="hero-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-10 mx-auto">
+
+                @* 💡 GÖRSEL ODAK: Büyük Başlık ve Vurgu *@
+                <h1 class="display-4 mb-4">
+                    Kariyeriniz Burada Başlar: <span class="text-warning">Onaylı Uzmanlardan Öğrenin.</span>
+                </h1>
+
+                <p class="lead mb-5" style="font-size: 1.25rem;">
+                    WebProgramlamaProje, profesyonel Yazılım Geliştirme alanında uzmanlaşmak için ihtiyacınız olan derinlemesine kursları sunar.
+                </p>
+
+                @* 🚨 DİKKAT ÇEKİCİ İSTATİSTİKLER *@
+                <div class="d-flex justify-content-center mb-5 gap-5 text-light">
+                    <div>
+                        <h2 class="display-5 fw-bold text-warning">@TotalCourses+</h2>
+                        <p class="lead small">Aktif Kurs</p>
+                    </div>
+                    <div>
+                        <h2 class="display-5 fw-bold text-warning">@TotalStudents+</h2>
+                        <p class="lead small">Mutlu Öğrenci</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    @* VURGULU BUTONLAR *@
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a asp-controller="Course" asp-action="Index" class="btn btn-lg btn-warning shadow-lg me-3" style="font-weight: 600;">Kurslara Başla</a>
+                        <a asp-controller="Course" asp-action="MyCourses" class="btn btn-lg btn-outline-light shadow-sm">Kayıtlı Kurslarım</a>
+                    }
+                    else
+                    {
+                        <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-lg btn-success shadow-lg me-3" style="font-weight: 600;">Hemen Kayıt Ol</a>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-lg btn-outline-light">Giriş Yap</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+
+    <hr class="my-5" />
+
+    @* --- BÖLÜM 2: GÜVENİLİRLİK VURGUSU (3 GEREKSİNİM) --- *@
+    <h3 class="text-center mb-4">Ayırt Edici Özelliklerimiz</h3>
+    <div class="row text-center">
+
+        <div class="col-md-4 mb-4">
+            <div class="card card-course h-100 p-3">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark">Uzman Eğitmen Onayı</h5>
+                    <p class="card-text text-muted">Kurslar, yöneticilerimiz tarafından **onaylanmış** profesyonel eğitmenler tarafından verilmektedir.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card card-course h-100 p-3">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark">Rol Bazlı Güvenlik</h5>
+                    <p class="card-text text-muted">Platformumuz, **Rol Bazlı Yetkilendirme** ile %100 güvenli bir deneyim sunar.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card card-course h-100 p-3">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-dark">Esnek Öğrenme</h5>
+                    <p class="card-text text-muted">Tüm içeriklere kaydolduktan sonra ömür boyu erişebilir, kendi hızınızda ilerleyebilirsiniz.</p>
+                </div>
+            </div>
+        </div>
+
+    </div> @* end row *@
+
+    <hr class="my-5" />
+
+    @* --- BÖLÜM 3: MİMARİ VURGUSU VE HAREKETE GEÇİRME --- *@
+    <div class="row bg-white p-5 rounded-3 shadow">
+        <div class="col-12 text-center">
+            <h3 class="text-secondary mb-4">Neden Teknik Mimarimize Güvenmelisiniz?</h3>
+        </div>
+        <div class="col-md-4 text-center">
+            <h4 class="text-dark">Code-First ve Migrations</h4>
+            <p class="small text-muted">Veri yapımız, profesyonel EF Core Code-First yaklaşımı üzerine kurulmuştur.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <h4 class="text-dark">Repository/DI Mimarisi</h4>
+            <p class="small text-muted">Yönetilebilir ve test edilebilir (Clean Code) prensipleri esas alınmıştır.</p>
+        </div>
+        <div class="col-md-4 text-center">
+            <h4 class="text-dark">Hemen Başlayın!</h4>
+            <p class="small text-muted">Kayıt işlemini tamamlayarak ilk kursunuza saniyeler içinde erişim sağlayın.</p>
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-sm btn-primary">Hemen Ücretsiz Kaydol</a>
+        </div>
+    </div>
+
+</div>
