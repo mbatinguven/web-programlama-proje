@@ -294,3 +294,4 @@ C:\Users\User\source\repos\WebProgramlamaProje\WebProgramlamaProje\obj\Debug\net
 C:\Users\User\source\repos\WebProgramlamaProje\WebProgramlamaProje\obj\Debug\net8.0\WebProgramlamaProje.pdb
 C:\Users\User\source\repos\WebProgramlamaProje\WebProgramlamaProje\obj\Debug\net8.0\WebProgramlamaProje.genruntimeconfig.cache
 C:\Users\User\source\repos\WebProgramlamaProje\WebProgramlamaProje\obj\Debug\net8.0\ref\WebProgramlamaProje.dll
+C:\Users\User\source\repos\WebProgramlamaProje\WebProgramlamaProje\obj\Debug\net8.0\WebProgramlamaProje.sourcelink.json

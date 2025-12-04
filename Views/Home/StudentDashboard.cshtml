@@ -4,65 +4,108 @@
     ViewData["Title"] = "Öğrenci Paneli";
 }
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .glass-card {
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(12px);
+        border-radius: 18px;
+        padding: 25px;
+        color: white;
+        box-shadow: 0 10px 35px rgba(0,0,0,.35);
+    }
+
+    .stat-card {
+        background: rgba(255,255,255,0.20);
+        border-radius: 16px;
+        padding: 25px;
+        color: white;
+        box-shadow: 0 8px 25px rgba(0,0,0,.3);
+    }
+
+    .carousel-item img {
+        height: 260px;
+        object-fit: cover;
+        border-radius: 18px;
+    }
+</style>
+
 <div class="container mt-5">
 
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="display-5 text-primary mb-4">Tekrar Hoş Geldiniz, @User.Identity.Name!</h1>
+    <!-- HOS GELDIN -->
+    <div class="glass-card text-center mb-5">
+        <h1 class="fw-bold">Tekrar Hoş Geldin, <span class="text-info">@User.Identity.Name</span> 👋</h1>
+        <p class="lead opacity-75">Öğrenmeye kaldığın yerden devam et!</p>
+    </div>
+
+    <!-- SLIDER -->
+    <div id="studentSlider" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+            <div class="carousel-item active">
+                <img src="https://source.unsplash.com/1200x400/?coding" class="d-block w-100">
+            </div>
+
+            <div class="carousel-item">
+                <img src="https://source.unsplash.com/1200x400/?software" class="d-block w-100">
+            </div>
+
+            <div class="carousel-item">
+                <img src="https://source.unsplash.com/1200x400/?education" class="d-block w-100">
+            </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#studentSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#studentSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- ISTATISTIKLER -->
+    <div class="row mb-5 text-center">
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h1>5</h1>
+                <p>Kayıtlı Kurs</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h1>12</h1>
+                <p>Tamamlanan Modül</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card">
+                <h1>25+</h1>
+                <p>Yeni Fırsatlar</p>
+            </div>
         </div>
     </div>
 
-    @* --- BÖLÜM 1: DEVAM ET VE İSTATİSTİK KARTLARI --- *@
-    <div class="row mb-5">
-
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-lg p-4 h-100 bg-success text-primary">
-                <div class="card-body">
-                    <h5 class="card-title">Son Kursunuz</h5>
-                    <p class="card-text lead">
-                        Şu anda **"ASP.NET Core Mimarisi"** kursunun 3. modülündesiniz. Hemen devam edin!
-                    </p>
-                    <a href="#" class="btn btn-warning mt-3">Derse Devam Et</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card shadow p-4 h-100 card-course">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Kayıtlı Kurs</h5>
-                    <h2 class="display-4 text-primary">5</h2>
-                    <a asp-controller="Course" asp-action="MyCourses" class="btn btn-sm btn-outline-primary">Tüm Kayıtlarım</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <div class="card shadow p-4 h-100 card-course">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Yeni Fırsatlar</h5>
-                    <h2 class="display-4 text-primary">25+</h2>
-                    <a asp-controller="Course" asp-action="Index" class="btn btn-sm btn-outline-success">Yeni Kurslara Göz At</a>
-                </div>
-            </div>
-        </div>
-
+    <!-- SON KURS -->
+    <div class="glass-card mb-5">
+        <h4 class="fw-bold mb-2">🎯 Son Kursunuz</h4>
+        <p class="opacity-75">ASP.NET Core Mimarisi kursunun 3. modülündesiniz.</p>
+        <a href="#" class="btn btn-warning fw-bold mt-2">Derse Devam Et</a>
     </div>
 
-    <hr class="my-4" />
-
-    @* --- BÖLÜM 2: GÜVENLİK VE YÖNETİM VURGUSU --- *@
-    <div class="row">
-        <div class="col-12">
-            <h4 class="mb-4 text-primary">Hızlı Erişim</h4>
-        </div>
-
-        <div class="col-md-4">
-            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-info w-100 mb-2 text-primary">Profil Ayarları</a>
-        </div>
-        <div class="col-md-4">
-            <a asp-controller="Course" asp-action="ApplyAsInstructor" class="btn btn-outline-warning w-100 mb-2 text-primary">Eğitmen Olmak İster misiniz?</a>
+    <!-- HIZLI ERİŞİM -->
+    <div class="glass-card">
+        <h4 class="mb-4">⚡ Hızlı Erişim</h4>
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <a asp-area="Identity" asp-page="/Account/Manage/Index" class="btn btn-info w-100">Profil Ayarları</a>
+            </div>
+            <div class="col-md-6 mb-2">
+                <a asp-controller="Course" asp-action="ApplyAsInstructor" class="btn btn-outline-warning w-100">Eğitmen Olmak İster misiniz?</a>
+            </div>
         </div>
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
